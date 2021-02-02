@@ -17,6 +17,10 @@ Not mobile responsive:
 
   - In books.service.ts, We can remove the explicit return statements inside http get call for search method. We can directly return mapped results using arrow functions and typecast the each result item to Book.
 
+  - Actions names could be given in a better way ex: AddToReadingListSuccessAction etc
+
+  - A dumb component can be used for book display in book-search and reading-list components.
+
   **Accessibility Issues**
     In book-search.component.html
      - 'alt' attribute is missing for images.
@@ -30,6 +34,7 @@ Not mobile responsive:
      - Close reading list drawer Button doesn't have a aria-label to make it accessible for screen readers.
      - Reading list book title and authors doesnt have aria-labels to make them accessible for screen readers.
      - Icons are missing aria-labels.
+     - empty text is very light. 
 
     In total-count.component.html
      - Should include a matBadgeDescription for badge to describe its functionality.
