@@ -24,4 +24,12 @@ describe('ProductsListComponent', () => {
   it('should create', () => {
     expect(component).toBeDefined();
   });
+
+  describe('Call subscribe', ()=>{
+    it('should call the subscribe method of form control', ()=>{
+       const spy = jest.spyOn(component.searchForm.controls.term.valueChanges, 'subscribe') 
+       component.ngOnInit();
+       expect(spy).toHaveBeenCalled();
+    });
+  });
 });
