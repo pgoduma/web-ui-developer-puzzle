@@ -1,4 +1,4 @@
-import { $, browser, ExpectedConditions } from 'protractor';
+import { $, browser, by, element, ExpectedConditions } from 'protractor';
 
 describe('When: I use the reading list feature', () => {
   it('Then: I should see my reading list', async () => {
@@ -16,5 +16,10 @@ describe('When: I use the reading list feature', () => {
         'My Reading List'
       )
     );
+  });
+  it('Then: Able to remove book and undo it', async () => {
+     await element(by.id('book1')).click();
+     await browser.sleep(2000);
+     await element(by.cssContainingText('.mat-button-wrapper', 'Undo')).click();
   });
 });
