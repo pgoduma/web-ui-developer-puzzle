@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {
   addToReadingList,
   clearSearch,
   getAllBooks,
   ReadingListBook,
-  searchBooks
+  searchBooks,
+  removeFromReadingList
 } from '@tmo/books/data-access';
 import { FormBuilder } from '@angular/forms';
-import { Book } from '@tmo/shared/models';
+import { Book, ReadingListItem } from '@tmo/shared/models';
 
 @Component({
   selector: 'tmo-book-search',
@@ -24,7 +26,8 @@ export class BookSearchComponent {
   books$ = this.store.select(getAllBooks);
   constructor(
     private readonly store: Store,
-    private readonly fb: FormBuilder
+    private readonly fb: FormBuilder,
+    private snackBar: MatSnackBar
   ) {}
 
   formatDate(date: void | string) {
@@ -35,6 +38,13 @@ export class BookSearchComponent {
 
   addBookToReadingList(book: Book) {
     this.store.dispatch(addToReadingList({ book }));
+    let snackBarRef = this.snackBar.open('Book added to Reading List', 'Undo', {
+      duration: 3000
+    });
+    snackBarRef.onAction().subscribe(() => {
+      const item = {bookId: book.id} as ReadingListItem;
+      this.store.dispatch(removeFromReadingList({ item }));
+    });
   }
 
   searchExample() {
