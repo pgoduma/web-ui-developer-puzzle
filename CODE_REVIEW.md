@@ -19,7 +19,9 @@ Not mobile responsive:
 
   - Actions names could be given in a better way ex: AddToReadingListSuccessAction etc
 
-  - A dumb component can be used for book display in book-search and reading-list components.
+  - A presentational and container components can be used for book display in book-search and reading-list components.
+
+  - In reading-list.component.scss, the css can be nested for better readability. Right now they are separate without leveraging the use of scss.
 
   **Accessibility Issues**
     In book-search.component.html
