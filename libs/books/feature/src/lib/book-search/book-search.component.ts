@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   addToReadingList,
   clearSearch,
@@ -10,25 +10,30 @@ import {
   removeFromReadingList
 } from '@tmo/books/data-access';
 import { FormBuilder } from '@angular/forms';
-import { Book, ReadingListItem } from '@tmo/shared/models';
+import { Book, ReadingListItem, AppGlobal } from '@tmo/shared/models';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'tmo-book-search',
   templateUrl: './book-search.component.html',
   styleUrls: ['./book-search.component.scss']
 })
-export class BookSearchComponent {
+export class BookSearchComponent implements OnDestroy{
 
   searchForm = this.fb.group({
     term: ''
   });
-  
+  snackBarSub: Subscription;
   books$ = this.store.select(getAllBooks);
   constructor(
     private readonly store: Store,
     private readonly fb: FormBuilder,
     private snackBar: MatSnackBar
   ) {}
+
+  get searchTerm(): string {
+    return this.searchForm.value.term;
+  }
 
   formatDate(date: void | string) {
     return date
@@ -38,10 +43,13 @@ export class BookSearchComponent {
 
   addBookToReadingList(book: Book) {
     this.store.dispatch(addToReadingList({ book }));
-    let snackBarRef = this.snackBar.open('Book added to Reading List', 'Undo', {
+    let snackBarRef = this.snackBar.open(AppGlobal.BOOK_ADDED_MESSAGE, AppGlobal.UNDO, {
       duration: 3000
     });
-    snackBarRef.onAction().subscribe(() => {
+    this.undoAddAction(snackBarRef, book);
+  }
+  undoAddAction(snackBarRef, book: Book) {
+    this.snackBarSub = snackBarRef.onAction().subscribe(() => {
       const item = {bookId: book.id} as ReadingListItem;
       this.store.dispatch(removeFromReadingList({ item }));
     });
@@ -54,9 +62,14 @@ export class BookSearchComponent {
 
   searchBooks() {
     if (this.searchForm.value.term) {
-      this.store.dispatch(searchBooks({ term: this.searchForm.value.term }));
+      this.store.dispatch(searchBooks({ term: this.searchTerm }));
     } else {
       this.store.dispatch(clearSearch());
     }
   }
+
+  ngOnDestroy(){
+    this.snackBarSub.unsubscribe();
+  }
+
 }
