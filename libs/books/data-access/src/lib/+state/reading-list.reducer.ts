@@ -52,7 +52,8 @@ const readingListReducer = createReducer(
   ),
   on(ReadingListActions.failedAddToReadingList, (state, action) => {
    return {
-     ...state
+     ...state,
+     error: new Error('Failed adding to reading list')
    }
   }),
   on(ReadingListActions.removeFromReadingList, (state, action) =>
@@ -60,7 +61,8 @@ const readingListReducer = createReducer(
   ),
   on(ReadingListActions.failedRemoveFromReadingList, (state, action) => {
     return {
-      ...state
+      ...state,
+      error: new Error('Failed Removing from reading list')
     }
    })
 );
