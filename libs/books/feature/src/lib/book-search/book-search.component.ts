@@ -41,10 +41,8 @@ export class BookSearchComponent implements OnInit{
          return of(query);
         })
         ).subscribe((text:string) => {
-        let searchQuery = text.replace(/\s/g, '');
-        if (searchQuery.length >= 2) {
-          this.searchBooks();
-        }
+        let searchQuery = text.replace(/^\s+|\s+$/g, ''); //remove leading and trailing whitespace
+        this.searchBooks(searchQuery);
     });
   }
 
@@ -60,12 +58,11 @@ export class BookSearchComponent implements OnInit{
 
   searchExample() {
     this.searchForm.controls.term.setValue('javascript');
-    this.searchBooks();
   }
 
-  searchBooks() {
-    if (this.searchForm.value.term) {
-      this.store.dispatch(searchBooks({ term: this.searchTerm }));
+  searchBooks(query: string) {
+    if ( query ) {
+      this.store.dispatch(searchBooks({ term: query }));
     } else {
       this.store.dispatch(clearSearch());
     }
