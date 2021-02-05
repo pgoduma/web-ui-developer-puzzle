@@ -29,7 +29,7 @@ export class ReadingListService {
     });
   }
 
-  async changeFinishedStatus(id: string): Promise<void> {
+  async changeFinishedStatus(id: string, item: ReadingListItem): Promise<void> {
     this.storage.update(list => {
      let book = list.find(b=>b.bookId === id);
      book.finished = !book.finished;
