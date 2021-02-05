@@ -7,10 +7,6 @@ Not mobile responsive:
 **Code Issues**
    - In book-search.component.ts, We can directly bind the response data from store to a locally created   observable and use async pipe in html to direcly display data. It is more declarative and reactive way of handling data.
 
-   - In book-search.component.ts, We can remove searchTerm getter method as the searchForm value can be accessible directly. Using searchTerm becomes repititive functionality.
-
-   - In book-search.component.ts, We can import all the available functionality by using * as syntax instead of importing individually.
-
    - In total-count.component.ts, We can remove empty ngOnInit method.
 
    - books-feature.module.ts, We can put all material components in a separate module and use then across different parts of application when needed.

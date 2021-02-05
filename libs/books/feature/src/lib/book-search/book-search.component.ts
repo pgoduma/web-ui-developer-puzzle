@@ -27,6 +27,13 @@ export class BookSearchComponent {
     private readonly fb: FormBuilder
   ) {}
 
+  get searchTerm(): string {
+    return this.searchForm.value.term;
+  }
+
+  // Removing empty ngOninit as part of Task 1 code review change. 
+  // Might add for next set of tasks as per requirement.
+
   formatDate(date: void | string) {
     return date
       ? new Intl.DateTimeFormat('en-US').format(new Date(date))
@@ -44,7 +51,7 @@ export class BookSearchComponent {
 
   searchBooks() {
     if (this.searchForm.value.term) {
-      this.store.dispatch(searchBooks({ term: this.searchForm.value.term }));
+      this.store.dispatch(searchBooks({ term: this.searchTerm }));
     } else {
       this.store.dispatch(clearSearch());
     }
