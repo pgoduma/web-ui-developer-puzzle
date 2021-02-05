@@ -25,11 +25,16 @@ describe('ProductsListComponent', () => {
     expect(component).toBeDefined();
   });
 
-  describe('Call subscribe', ()=>{
-    it('should call the subscribe method of form control', ()=>{
-       const spy = jest.spyOn(component.searchForm.controls.term.valueChanges, 'subscribe') 
-       component.ngOnInit();
-       expect(spy).toHaveBeenCalled();
+  describe('Check valuechanges of input query', ()=>{
+    it('should get the typed search query', ()=>{
+      const app = fixture.debugElement.componentInstance;
+      const el = fixture.nativeElement.querySelector('input');
+      el.value = 'javascript';
+      el.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        expect(app.searchTerm).toBe('javascript');
+      });
     });
   });
 });

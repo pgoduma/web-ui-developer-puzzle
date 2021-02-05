@@ -29,7 +29,10 @@ export class BookSearchComponent implements OnInit{
     private readonly fb: FormBuilder
   ) {}
 
-  
+  get searchTerm(): string {
+    return this.searchForm.value.term;
+  }
+
   ngOnInit(){
     this.searchForm.controls.term.valueChanges
       .pipe(
@@ -62,7 +65,7 @@ export class BookSearchComponent implements OnInit{
 
   searchBooks() {
     if (this.searchForm.value.term) {
-      this.store.dispatch(searchBooks({ term: this.searchForm.value.term }));
+      this.store.dispatch(searchBooks({ term: this.searchTerm }));
     } else {
       this.store.dispatch(clearSearch());
     }
