@@ -10,8 +10,11 @@ form {
 
 .book-grid {
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
+  @media(max-width: 767px){
+    grid-template-columns: 1fr;
+  }
 }
 
 .book {
@@ -68,5 +71,5 @@ form {
   justify-content: center;
   min-height: 50vh;
   font-size: 1.5rem;
-  color: $gray40;
+  color: $gray85;
 }

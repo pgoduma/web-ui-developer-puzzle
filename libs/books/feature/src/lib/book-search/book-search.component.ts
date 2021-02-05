@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   addToReadingList,
@@ -15,13 +15,13 @@ import { Book } from '@tmo/shared/models';
   templateUrl: './book-search.component.html',
   styleUrls: ['./book-search.component.scss']
 })
-export class BookSearchComponent implements OnInit {
-  books: ReadingListBook[];
+export class BookSearchComponent {
 
   searchForm = this.fb.group({
     term: ''
   });
-
+  
+  books$ = this.store.select(getAllBooks);
   constructor(
     private readonly store: Store,
     private readonly fb: FormBuilder
@@ -31,11 +31,8 @@ export class BookSearchComponent implements OnInit {
     return this.searchForm.value.term;
   }
 
-  ngOnInit(): void {
-    this.store.select(getAllBooks).subscribe(books => {
-      this.books = books;
-    });
-  }
+  // Removing empty ngOninit as part of Task 1 code review change. 
+  // Might add for next set of tasks as per requirement.
 
   formatDate(date: void | string) {
     return date
