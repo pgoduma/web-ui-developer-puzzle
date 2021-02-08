@@ -15,7 +15,7 @@
 
 <ng-container *ngIf="(books$ | async).length > 0; else empty">
   <div class="book-grid">
-    <div class="book" data-testing="book-item" *ngFor="let b of books$ | async">
+    <div class="book" data-testing="book-item" *ngFor="let b of books$ | async; let i = index">
       <div class="book--title" aria-label="Book Title">
         {{ b.title }}
       </div>
@@ -32,13 +32,14 @@
           <p aria-label="Book description" [innerHTML]="b.description"></p>
           <div>
             <button
+              id="action-btn-{{i+1}}"
               aria-label="Want to Read button"
               mat-flat-button
               color="primary"
               (click)="addBookToReadingList(b)"
               [disabled]="b.isAdded"
             >
-              Want to Read
+              {{b.isFinished? 'Finished' : 'Want to Read'}}
             </button>
           </div>
         </div>
@@ -49,7 +50,7 @@
 <ng-template #empty>
   <div class="empty">
     <p aria-label="Welcome message">
-      Try searching for a topic, for example "<a aria-label="clickable link" (click)="searchExample()"
+      Try searching for a topic, for example "<a data-testing="default-query" aria-label="clickable link" (click)="searchExample()"
         >JavaScript</a
       >".
     </p>

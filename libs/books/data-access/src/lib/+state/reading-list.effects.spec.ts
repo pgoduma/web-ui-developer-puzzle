@@ -7,6 +7,7 @@ import { HttpTestingController } from '@angular/common/http/testing';
 import { SharedTestingModule } from '@tmo/shared/testing';
 import { ReadingListEffects } from './reading-list.effects';
 import * as ReadingListActions from './reading-list.actions';
+import { createBook, createReadingListItem } from '@tmo/shared/testing';
 
 describe('ToReadEffects', () => {
   let actions: ReplaySubject<any>;
@@ -40,6 +41,51 @@ describe('ToReadEffects', () => {
       });
 
       httpMock.expectOne('/api/reading-list').flush([]);
+    });
+  });
+  describe('addBook$', () => {
+    it('should work', done => {
+      actions = new ReplaySubject();
+      actions.next(ReadingListActions.init());
+
+      effects.addBook$.subscribe(action => {
+        expect(action).toEqual(
+          ReadingListActions.confirmedAddToReadingList({ book: createBook('A') })
+        );
+        done();
+      });
+      const req = httpMock.expectOne({method: 'POST'});
+      req.flush('POST');
+    });
+  });
+  describe('removeBook$', () => {
+    it('should work', done => {
+      actions = new ReplaySubject();
+      actions.next(ReadingListActions.init());
+
+      effects.removeBook$.subscribe(action => {
+        expect(action).toEqual(
+          ReadingListActions.confirmedRemoveFromReadingList({ item: createReadingListItem('A') })
+        );
+        done();
+      });
+      const req = httpMock.expectOne({method: 'DELETE'});
+      req.flush('Delete');
+    });
+  });
+  describe('bookFinished$', () => {
+    it('should work', done => {
+      actions = new ReplaySubject();
+      actions.next(ReadingListActions.init());
+
+      effects.bookFinished$.subscribe(action => {
+        expect(action).toEqual(
+          ReadingListActions.toggleFinishedSuccessAction({ item: createReadingListItem('A') })
+        );
+        done();
+      });
+      const req = httpMock.expectOne({method: 'PUT'});
+      req.flush('PUT');
     });
   });
 });

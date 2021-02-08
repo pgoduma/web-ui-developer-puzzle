@@ -49,6 +49,15 @@ describe('Books Reducer', () => {
       const result: State = reducer(state, action);
       expect(result.ids).toEqual(['A', 'B', 'C']);
     });
+
+    it('toggleFinishedSuccessAction should change book finished status from the state', () => {
+      const action = ReadingListActions.toggleFinishedSuccessAction({
+        item: createReadingListItem('A')
+      });
+
+      const result: State = reducer(state, action);
+      expect(result.entities['A'].finished).toBe(true);
+    });
   });
 
   describe('unknown action', () => {

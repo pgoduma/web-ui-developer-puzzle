@@ -1,5 +1,5 @@
 <ng-container *ngIf="(readingList$ | async).length > 0; else empty">
-  <div class="reading-list-item" *ngFor="let b of readingList$ | async">
+  <div [class.reading-list-item-bookfinished]="b.finished" class="reading-list-item" *ngFor="let b of readingList$ | async; let i = index">
     <div>
       <img class="reading-list-item--cover" [src]="b.coverUrl" alt="{{b.title}}"/>
     </div>
@@ -8,15 +8,21 @@
       <div aria-label="Reading list Book Authors" class="reading-list-item--details--author">
         {{ b.authors.join(',') }}
       </div>
+      <p aria-label="Book Finished Date" *ngIf="b.finished" class="reading-list-item--details--finished">Finished Date: {{b.finishedDate | date : 'MM/dd/yyyy'}}</p>
     </div>
-    <div>
+    <div class="reading-list-item--checkbox" [class.reading-list-item--checkbox-fbg]="b.finished">
       <button
-        mat-icon-button
-        color="warn"
+          id="action-finished-{{i+1}}"
+          (click)="changeToFinished(b)"
+          [attr.aria-label]="'Click to change ' + b.title + ' to finished'">
+          <mat-icon aria-hidden="false" aria-label="circle tick icon">check_circle</mat-icon>
+      </button>
+    </div>
+    <div class="reading-list-item--remove">
+      <button
         [attr.aria-label]="'Remove ' + b.title + ' from reading list'"
-        (click)="removeFromReadingList(b)"
-      >
-        <mat-icon aria-hidden="false" aria-label="remove icon">remove_circle</mat-icon>
+        (click)="removeFromReadingList(b)">
+        <mat-icon aria-hidden="false" aria-label="remove icon">highlight_off</mat-icon>
       </button>
     </div>
   </div>
